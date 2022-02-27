@@ -1,0 +1,505 @@
+arge Integer Multiplication using Divide and Conquer
+By codecrucks|October 1, 2021|Categories: Algorithm|Tags: algorithm, divide and conquer, large integer multiplication|0 Comments
+Large Integer Multiplication is a common procedure in computer-assisted problem solving. Multiplying big numbers is not only difficult, but also time-consuming and
+error-prone.
+
+In this article, we will look at two approaches to multiplying big numbers: the grade school method and the divide and conquer method.
+
+Large Integer Multiplication
+Large Integer Multiplication
+Large Integer Multiplication using Grade School Multiplication
+In school, we studied the traditional multiplication technique. The multiplicand is multiplied by each digit of the multiplier in that technique, and a partial result of each multiplication is added by performing appropriate shifting. This method is also known as the Traditional Multiplication Method.
+
+The following example demonstrates how to perform grade school multiplication in both American and English way.
+
+Traditional Matrix Multiplication
+Traditional Matrix Multiplication
+This approach is simple to grasp, yet it is time-consuming and inefficient. If multiplicand has n digits and multiplier has m digits, the complexity of multiplication would be O(mn).
+
+This technique takes quadratic time, which is insufficient for big numbers. Let’s look into a more convenient method of multiplication.
+
+Large Integer Multiplication using Divide and Conquer Approach
+There are two ways to perform large integer multiplication using divide and conquer. The first method – we call dumb method – does not improve the running time. Second method – we call clever approach – performs better then the traditional approach for integer multiplication.
+
+Dumb Approach:
+Let us represent number D as D = dn-1dn-2. . . d2d1d0. Each digit di is the ith least significant digit in number D. Value of each position is given by,
+
+d0 = 100 position
+
+d1 = 101 position
+
+d2 = 102 position
+
+.
+
+ .
+
+dn – 1 = 10n – 1 position.
+
+According to position value,
+
+45 = 4*101 + 5*100
+
+23 = 2*101 + 3*100
+
+For any real values a, b, c and d,
+
+(a + b)*(c + d) = (a*c + a*d + b*c + b*d)
+
+So, 45 * 23    =   (4*101 + 5*100) * (2*101 + 3*100)
+
+=   (4 *2) *102 + (4*3 + 5*2) *101 + (5*3) *100
+
+= 800 + 220 + 15 
+
+= 1035
+
+Let’s derive formula to multiply two numbers of two digits each. Consider C = A * B. If we consider A = a1a0 and B = b1b0, then               
+
+C = A * B = c2102 + c1101 + c0100
+
+Where, 
+
+c2 = a1 * b1
+
+c1 = a1* b0 + a0* b1
+
+c0 = a0 * b0
+
+This method does four multiplications, same as conventional method. This is as dumb as grade school multiplication. Algorithm for this approach is described below :
+
+Algorithm DC_DUMB_MULTIPLICATION(A, B)
+// Description : Perform multiplication of large numbers using divide and conquer strategy.
+// Input : Number A and B, where A = an-1…a1a0, 
+B = bn-1... b1b0
+// Output : Multiplication of A and B as C, i.e. C = A * B
+
+if |a| == 1 or |b| == 1 then
+ return A * B
+else
+  n ← max(|A|, |B|)	// returns maximum number digits
+  c2 ← DC_DUMB_MULTIPLICATION(a1, b1)
+  c0 ← DC_DUMB_MULTIPLICATION(a0, b0)
+  x ← DC_DUMB_MULTIPLICATION(a1, b0)
+  y ← DC_DUMB_MULTIPLICATION(a0, b1)
+  c1 ← x + y
+ 
+  return c2*10n + c1 * 10n/2 + c0
+end
+Example: Multiply 2345 with 678 using divide and conquer approach.
+Solution:
+
+Size of both operands must be even, so pad zero to the multiplier.
+
+A = 2345 and B = 0678
+
+A = a1a0 = 2345, hence a1 = 23 and a0 = 45
+
+B = b1b0 = 0678, hence b1 = 06 and b0 = 78
+
+C = A * B =c2104 + c1102 + c0100
+
+c2 = a1 * b1 
+
+= 23 * 06
+
+= 138       
+
+c1 = a1*b0 + a0*b1 
+
+= (23*78) + (45 * 06)
+
+= 2064
+
+c0 = a0 * b0
+
+=(45 * 78)
+
+= 3510
+
+C = c2102 + c1101 + c0100
+
+= 138*104 + 2064*102 + 3510
+
+= 15, 89, 910
+
+Clever Approach:
+Previous DC approach does four multiplications. Let’s reformulate it to reduce numbers of multiplications to three.
+
+First approach:
+
+According to dumb approach,
+
+c2 = a1 * b1
+
+c1 = a1*b0 + a0*b1 …(1)
+
+c0 = a0*b0
+
+Second approach:
+
+Let us rewrite c1 as,
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)
+
+= (a1b1 + a1b0 + a0b1 + a0b0) – (a1b1 + a0b0)
+
+= a1*b0 + a0*b1 …(2)
+
+Equation (1) and Equation (2) are the same, but the second approach of computing c1 involves only one multiplication rather than two as it requires in the first approach.
+
+For A = a1a0 = 2345,
+
+hence, a1 = 23 and a0 = 45 and
+
+B = b1b0 = 0678,    
+
+hence, b1 = 06 and b0 = 78
+
+c2 = a1 * b1 
+
+= 23 * 06
+
+= 138
+
+c0 = a0*b0
+
+= (45 * 78)
+
+= 3510
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)
+
+= (23 + 45) * (06 + 78) – (138 + 3510)
+
+= 68 * 84 – 3648
+
+= 2064
+
+It is same as c1 = (a1*b0 + a0*b1) of dumb multiplication approach, but does only one multiplication rather than two.
+
+C = c2 * 104 + c1 * 102 + c0
+
+= 1380000 + 206400 + 3510 = 15, 89, 910
+
+This formulation leads to same result, with three multiplications only.
+
+Generalization:
+
+If size of integer is n digit, then we can generalize multiplication as,
+
+C = c210n + c110n/2 + c0
+
+Where, c2 = a1 * b1
+
+c0 = a0*b0
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)                                                                                                  
+
+This can be solved by applying recursion till n reaches to 1.
+
+Algorithm DC_CLEVER_MULTIPLICATION(A, B)
+// Description : Perform multiplication of large numbers using divide and conquer strategy.
+// Input : Number A and B, where A = an-1…a1a0, and B = bn-1...b1b0
+// Output : Multiplication of A and B as C, i.e. C = A * B
+
+if |a| == 1 or |b| == 1 then
+  return A * B
+else
+  n ← max(|A|, |B|)	
+  c2 ← DC_ CLEVER_MULTIPLICATION(a1, b1)
+  c0 ← DC_ CLEVER_MULTIPLICATION(a0, b0)
+  x ← DC_ CLEVER_MULTIPLICATION(a1 + a0, b1 + b0)
+  return c2*10n + (x – c2 – c0) * 10n/2 + c0
+end
+Complexity Analysis
+For n digit integer, we have to perform 3 multiplications of integers of size (n / 2). Recurrence equation for this problem is given as,
+
+T(n) = 3T(n/2), if n > 1
+
+T(n) = 1, if n = 1
+
+Proof:
+
+T(n) = 3T(n/2) … (3)
+
+Let us solve this recurrence by an iterative approach. Substitute n by n/2 in Equation (3)
+
+T(n/2) = 3T(n/4) … (4)
+
+Put this value in Equation (3),
+
+T(n) = 3(3T(n/4)) = 32T(n/22) … (5)
+
+Substitute n by n/2 in Equation (4)
+
+T(n/4) = 3T(n/8)
+
+Put this value in Equation (3)
+
+T(n) = 3(32T(n/8)) = 33T(n/23) … (6)
+
+.
+
+.
+
+After k iterations,
+
+T(n) = 3kT(n/2k) …(7)
+
+Every time number of digits in number reduces by factor 2, so it can go as deep as log2n,
+
+So, k = log2n ⇒ n = 2k
+
+Thus from equation (5), T(n) = 3kT( 2k /2k)
+
+T (n) = nlog23 × T(1) (∵ nlogba = alogb n)
+
+T (1) = 1(Only one multiplication is required to multiply two numbers of digits 1)                                
+
+So, T(n) = nlog23 = O(n1.58)
+
+Grade school method multiplies each digit of the multiplier with each digit of the multiplicand. So for each digit of the multiplier, n multiplications are performed with multiplicand. This is done each of the n bits of the multiplier. So running time of that method was O(n2), whereas the divide and conquer approach reduces the running time to O(n1.58). For large numbers, the difference becomes significant.
+
+Example
+Problem: Perform multiplication of given large integers 957 ´ 9873 in timeless than O(n2).
+
+Solution:
+
+Let A = a1a0 = 0957,
+
+hence a1 = 09 and a0 = 57 and
+
+B = b1b0 = 9873, 
+
+hence b1 = 98 and b0 = 73
+
+Given problem is of size 4, so n = 4.
+
+Solution to this problem using divide and conquer approach can be given as,
+
+C = c2 * 104 + c1 * 102 + c0
+
+Where, c2 = a1 * b1
+
+c0 = a0*b0
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)
+
+Let us compute c0, c1 and c2.
+
+c2 = a1 * b1 = 09 * 98
+
+This is a new problem of size 2, solve it recursively,
+
+Here X = x1x0 = 09 and hence x1 = 0 and x0 = 9
+
+Y = y1y0 = 98 = 09 and hence y1 = 9 and y0 = 8
+
+z2 = x1 * y1 
+
+= 0 * 9
+
+= 0
+
+z0 = x0 * y0 
+
+= 9 * 8
+
+= 72
+
+z1 = x0 + x1) * (y0 + y1) – (z2 + z0)
+
+= (0 + 9) *(9 + 8) – (0 + 72)
+
+= (9*17) – 72
+
+= 81
+
+Z = z2 * 102 + z1 * 10 + z0
+
+= 0 + 810 + 72  
+
+= 882
+
+c0 = a0*b0 = (57 * 73)
+
+Like c2, this is also a problem of size 2 and solved similar in a recursive manner, and the same will apply to the computation of c1.
+
+c0 = 4161
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)
+
+= (09 + 57) * (98 + 73) – (882 + 4161)
+
+= (66 * 171) – 5043
+
+= 6243
+
+C = c2 * 104 + c1 * 102 + c0
+
+= 8820000 + 624300 + 4161
+
+= 94, 48, 461
+
+This formulation leads to same result, with three multiplications only.
+
+Problem: Show the steps in multiplying the following two integers using efficiency integer multiplication method 2101 * 1130.
+
+Solution:
+
+Given the numbers
+
+A = a1 a0 = 2101
+
+⇒  a1 = 21 and a0 = 01
+
+B = b1 b0 = 1130
+
+⇒  b1 = 11 and b0 = 30
+
+Efficient integer multiplication is achieved as
+
+A * B = c2 * 104 + c1 * 102 + c0  ….(1)
+
+Where,       
+
+c2 = a1 * b1  = 21 * 11
+
+c0 = a0 * b0  =  01 * 30
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)
+
+Find c2
+
+c2 = a1 * b1  =  21 * 11
+
+| a | >1 and | b | > 1, So  recursively solve the problem 21 * 11.
+
+Here,
+
+A1 = 21 ⇒ a1  = 2  and   a0 = 1
+
+B1 = 11 ⇒ b1  = 1  and   b0 = 1
+
+A1 * B1 = x2 * 102 + x1 * 101 + x0
+
+x2 = a1 * b1
+
+= 2 * 1
+
+= 2
+
+x0 = a0 * b0 
+
+= 1 * 1
+
+= 1
+
+x1 = (a1 + a0) * (b1 * b0) – (x2 + x0)
+
+= (2 + 1) * (1 + 1) – (2 + 1)
+
+= (3 * 2 ) – 3
+
+= 3
+
+c2 = A1 * B1 = x2 * 102 + x1 * 10 +  x0
+
+= 200 + 30 + 1
+
+= 231
+
+Find c0
+
+c0 = a0 * b0 = 01 * 30
+
+| b0 | > 1,  So  recursively solve the problem 01 * 30
+
+Here,
+
+A2 = 01 ⇒ a1 = 0 and a0 = 1
+
+B2 = 30 ⇒ b1 = 3 and b0 = 0
+
+A2 * B2 = y2 * 102 + y1 * 10 + y0
+
+y2 = a1* b1
+
+= 0 * 3
+
+= 0
+
+y0 = a0 * b0
+
+= 1 * 0
+
+= 0
+
+y1 = (a1 + a0) * (b1 + b0) – (y2+ y0)
+
+= (0 * 3) * (1 + 0) – (0 + 0) 
+
+= 0
+
+c0 = A2 * B2 =  y2 * 102 +  y1 * 10+  y0
+
+= 0 + 3 * 10 + 0 
+
+= 30
+
+Find c1
+
+c1 = (a1 + a0) * (b1 + b0) – (c2 + c0)
+
+= (21 + 01) * (11 + 30) – (231 + 30)
+
+= (22 * 41) – (261)          …(2)
+
+22 * 41 is the new problem of size n/2
+
+Find 22 * 41
+
+Here,
+
+A1 = 22 ⇒ a1 = 2, a0 = 2
+
+B1 = 41 ⇒ b1 = 4, b0 = 1
+
+z2 = a1 * b1
+
+= 2 * 4
+
+= 8
+
+z0 = a0 * b0
+
+= 2 * 1
+
+= 2
+
+z1 = (a1 + a0) * (b1 + b0) – (z2 + z0)
+
+= (2 + 2) * (4 + 1 ) – (8 + 2)
+
+= 4 * 5 – 10 
+
+= 10
+
+A1 * B1 = z2 * 102 + z1 * 101+ z0
+
+= 800 + 100 + 2
+
+= 902
+
+Put this value back in Equation (2),
+
+c1 = 902 – 261
+
+= 641
+
+Put c2,  c1  and  c0 in Equation (1),
+
+A * B = 2310000 + 64100 + 30
+
+= 2374130
