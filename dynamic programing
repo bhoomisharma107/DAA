@@ -1,0 +1,31 @@
+
+Dynamic Programming is also used in optimization problems. Like divide-and-conquer method, Dynamic Programming solves problems by combining the solutions of subproblems.
+Moreover, Dynamic Programming algorithm solves each sub-problem just once and then saves its answer in a table, thereby avoiding the work of re-computing the answer every time.
+
+Two main properties of a problem suggest that the given problem can be solved using Dynamic Programming. These properties are overlapping sub-problems and optimal substructure.
+
+Overlapping Sub-Problems
+Similar to Divide-and-Conquer approach, Dynamic Programming also combines solutions to sub-problems. It is mainly used where the solution of one sub-problem is needed repeatedly. The computed solutions are stored in a table, so that these don’t have to be re-computed. Hence, this technique is needed where overlapping sub-problem exists.
+
+For example, Binary Search does not have overlapping sub-problem. Whereas recursive program of Fibonacci numbers have many overlapping sub-problems.
+
+Optimal Sub-Structure
+A given problem has Optimal Substructure Property, if the optimal solution of the given problem can be obtained using optimal solutions of its sub-problems.
+
+For example, the Shortest Path problem has the following optimal substructure property −
+
+If a node x lies in the shortest path from a source node u to destination node v, then the shortest path from u to v is the combination of the shortest path from u to x, and the shortest path from x to v.
+
+The standard All Pair Shortest Path algorithms like Floyd-Warshall and Bellman-Ford are typical examples of Dynamic Programming.
+
+Steps of Dynamic Programming Approach
+Dynamic Programming algorithm is designed using the following four steps −
+
+Characterize the structure of an optimal solution.
+Recursively define the value of an optimal solution.
+Compute the value of an optimal solution, typically in a bottom-up fashion.
+Construct an optimal solution from the computed information.
+Applications of Dynamic Programming Approach
+Matrix Chain Multiplication
+Longest Common Subsequence
+Travelling Salesman Problem
