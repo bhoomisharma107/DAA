@@ -1,0 +1,89 @@
+Introduction
+A knapsack is a bag with straps, usually carried by soldiers to help them take their valuables or things which they might need during their journey. The 0/1 knapsack problem is a very famous interview problem. The problem statement is as follows:
+
+Given a set of items, each of which is associated with some weight and value. Find the subset of items which can be carried into the knapsack with weight limit W. It is required that the cumulative value of the items in the knapsack is maximum value possible.
+
+In simple words, it asks you to pick certain items from the set of items such that their total weight is less than or equal to W and the sum of their values is maximum.
+
+What is the meaning of 0/1?
+
+0/1 means that either we can pick an item or we can leave the item. It is impossible to take a fraction of the item.
+
+Approach for  Knapsack problem using Dynamic Programming
+Problem Example
+Although this problem can be solved using recursion and memoization but this post focuses on the dynamic programming solution. To learn, how to identify if a problem can be solved using dynamic programming, please read my previous posts on dynamic programming.
+
+Here is an example input :
+
+Weights : 2 3 3 4 6
+
+Values :    1 2 5 9 4
+
+Knapsack Capacity (W) = 10
+
+From the above input, the capacity of the knapsack is 15 kgs and there are 5 items to choose from. Please note that there are no items with zero weight. A very simple idea is to evaluate each item and find out if it should be included in the knapsack or not in order to maximize the value.
+
+Approach
+Have a look at the below table and then I will explain the algorithm.
+
+ Knapsack problem using Dynamic Programming
+
+The numbers in the header row represent maximum allowed weight. This means, if I am looking at the column with header value 0, this means we are solving for maximum allowed weight zero. Similarly if we are looking at the column with header value 7, we are essentially interested in maximum allowed weight 7.
+
+The very first column represents the weights and their values in bracket.  So, if we are looking at row 2, that means the only weights at our disposal is the weight in row 0, 1 and 2. So if I am looking at the row with weight 4(9), that means, we only care about weights 2(1), 3(2), 3(5) and 4(9) and we have not yet considered weight 6(4).
+
+So, what does a cell in the grid represents?
+
+The content of a cell (i,j) represents the maximum value we can achieve by choosing from weights w0, w1, .. wi such that the sum of weights is less than or equal to j. IN this grid, the value of cell (3, 6) is 10. This means, if the weight limit of our knapsack is 6 and the items at our disposal are 2(1), 3(2), 3(5) and 4(9), then the maximum value we can get by picking items from this list would be 10.
+
+One more time, cell (4, 10) has the value 16. This means that the maximum value we can get from items 2(1), 3(2), 3(5), 4(9) and 6(4) is 16 within the knapsack’s weight limit of 10.
+
+How to populate this grid?
+Let us first populate the zeroth row of the grid. This row means, if we are given just one weight 2(1) then for each knapsack of weight limit (0 to 10) what is the maximum value we can achieve. For a knapsack of weight limit zero, we cannot put the weight 2(1), hence the value would be 0. Similarly, for the knapsack of weight limit one, we cannot choose this weight, hence the value would still be zero.
+
+But for the knapsack of weight limit 2, we can definitely pick the weight 2(1) as this is the only weight available till row zero. Hence we can achieve a maximum value of 1, if we only have weight 2(1) and knapsack of capacity 2. Same argument goes for the remaining cells in the zeroth row. No matter how big the capacity of knapsack is, if the only weight available to us is 2(1), then the maximum value we can achieve is 1.
+
+When we move to the first row, it means that we now have two weights at our disposal 2(1) and 3(2). But again, the knapsack of capacity 0\less than 3 won’t be affected by making this weight available, because we can never pick this weight. So, we can just copy the values for columns zero, one and two. For a knapsack of capacity 3 we can choose to ignore the weight 3(2) or pick it up. The maximum value would be the maximum of these two options.
+
+If we choose 3(2), then the value would be 2 + the maximum value from the remaining weight (3-3 = 0). So, the maximum value for weight zero is 0.
+
+If we ignore the   weight 3(2), then the value would be same as the value in the above row which is 1. Now the maximum of (2, 1) is 2. Hence, the value of cell (1,3) is 2.
+
+Lets do it one more time.
+let us choose a knapsack of capacity 5 and weights available are 2(1) and 3(2). As we have two options, we can choose to pick 3(2) or ignore 3(2). In case we pick 3(2), the value would be 2 + maximum value possible using remaining weight (5-3 = 2). So, maximum value possible for a knapsack of weight 2 is 1. Hence the total value after choosing 3(2) is 2+1 = 3
+
+If we ignore the weight 3(2), then the value would be maximum value possible for a knapsack of capacity 5 given the weight 2(1), and this is the value at cell (0,5) which is equal to 1. Now the maximum of 3 and 1 is 3. Hence the cell (1,5) will have a value 3.
+
+Source Code
+private static int knapsack(int[] w, int[] v, int W) {
+  int[][] dp = new int[w.length][W + 1];
+  dp[0][0] = 0;
+  for(int i = 1 ; i < dp[0].length; i++){
+    if(w[0] <= i){
+      dp[0][i] = v[0];
+    }else{
+      dp[0][i] = 0;
+    }
+  }
+		
+  for (int i = 1; i < dp.length; i++) {
+    for (int j = 1; j < dp[i].length; j++) {
+      // if a weight is more than the allowed weight, that weight cannot be picked.
+        if(w[i] > j){
+          dp[i][j] = dp[i-1][j];
+        }else{
+          dp[i][j] = Math.max(dp[i-1][j], v[i] + dp[i-1][j-w[i]]);
+        }
+      }
+    }
+    return dp[dp.length-1][W];
+}
+The above source code returns the solution of the knapsack’s problem.
+
+Analysis
+The algorithm requires an auxiliary space which is proportional to M * W  where M is the length of the weights array. Hence, the space complexity is O(M*W).
+
+The running time of the algorithm is also proportional to M * W because there are two loops and the outer one runs for M times and the inner one runs for W times. Hence the running time would be O(M*W).
+
+Summary
+This problem can be solved using recursion as well, and most of the time, dynamic programming is not the first approach to a problem, first we get the recursive problem and try to apply memoization. This process gives a hint if it can be solved by dynamic programming. I will be writing a different post to show how this can be solved using recursion and what triggers us to think if this can be solved using DP as well.
