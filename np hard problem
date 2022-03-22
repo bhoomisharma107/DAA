@@ -1,0 +1,84 @@
+NP - Polymonial time but are non-Deterministic.
+
+A decision problem is NP-hard when there exists a polynomial-time many-one reduction of any NP problem to the current NP hard problem.
+
+Basically, to prove a problem NP hard we need to reduce it to a problem which is already labelled NP hard. This reduction has to take polynomial time,though.
+
+So, the next question that arises it to know the base NP Hard problem which can be used for reduction. Although, one can use any NP hard problem for the reduction,
+Satisfiability problem is usually used for reduction.
+
+
+ 
+Once the reduction is complete, we only need to write a non deterministic algorithm for the problem to make it NP Complete. But in this article we focus on reducing 
+and identifying problems as NP Hard.
+
+NP Hard problem examples
+An example of an NP-hard problem is the decision subset sum problem: given a set of integers, does any non-empty subset of them add up to zero? That is a decision 
+problem and happens to be NP-complete.
+
+Another example of an NP-hard problem is the optimization problem of finding the least-cost cyclic route through all nodes of a weighted graph. This is commonly known
+ as the traveling salesman problem. Both the problems are discussed below.
+
+
+ 
+There are decision problems that are NP-hard but not NP-complete such as the halting problem which says "given a program and its input, will it run forever?" That
+is a yes/no question and so is a decision problem. The Boolean satisfiability problem can be reduced to the halting problem by transforming it to the description of
+a Turing machine that tries all truth value assignments and when it finds one that satisfies the formula it halts and otherwise it goes into an infinite loop. We see 
+that the halting problem is not in NP since all problems in NP are decidable in a finite number of operations, but the halting problem, in general, is undecidable.
+There are also NP-hard problems that are neither NP-complete nor Undecidable.
+
+Subset sum Problem
+In the subset sum problem we are given a finite set S and a target t. We need to determine whether a subset S' exists in S such tat the sum of elements in S' is equal
+to t. We can reduce 3CNF SAT to this problem to prove it an NP Hard problem.
+Given a 3 CNF formula over variables x1,x2,x3...xn with clauses C1,C2,C3...Cn each containing exactly 3 distinct literals, the reduction algorithm constructs an 
+instance (S,t). We make 2 simplifying assumptions. First,no clause contains both the variable and it's negation i.e every element is either in the resultant subset
+or it is not. Second, each variable occurs in at least one clause i.e for each element in the given set we have to decide whether or not it is in the resultant subset.
+
+Travelling salesman problem
+In the travelling salesman problem,a salesman must visit n cities. Modelling the problem as a complete graph with n vertices, we ca say that the salesman wisj=hes
+to make a tour, or a hamiltonian cycle, visisting each city ecxactly once and finishing at the city he starts from. There is an integer cost c(i,j) to travel from city i to city j, and the salesman wishes to make the tour whose total cost is minimumwhere the total cost is the sum of edges along the edges of the tour.
+Formally,
+TSP = {(G,c,k): G = (V,E) is a complete graph
+c is a function from VxV -> Z
+k belongs to Z and
+G has a travelling salesman tour with cost at most k}
+
+To prove TSP is NP hard,we reduce it to hamiltonian cycle problem.Let G = (V,E) be an instance of HAM_CYCLE. We construct an instance of TSP as follows. We form the complete graph G'= (V,E') where E'= {(i,j) : i,j belongs to V and i != j},we define the cost function by,
+c(i,j) = 0 if (i,j) belongs to E
+1 if (i,j) does not belong to E
+We now show that graph G has a hamiltonian cycle if and only if graph G' has a tour of cost at most 0. Suppose that graph G has a hamiltonian cycle h. Each edge in h belongs to E and thus has cost 0 in G'. Thus, h is a tour in G' with cost 0.Conversely, suppose that graph G' has a tour h'of cost at most 0. Since the costs of edges in E'are 0 and 1, the cosy=t of tour h'is exactly 0 and each edge on the tour must have cost 0. Therefore, h' contains only edges in E. We conclude that h'is a hamiltonian cycle in graph G.
+
+How to know whether a problem is NP Hard?
+If a given problem can be reduced to a NP Hard problem using reduction, then the given problem is also called a NP Hard problem. This transformation should be completed in polynomial time, also called Karp's Reduction.
+
+Karp Reduction is a polynomial-time many-one reduction from a problem A to a problem B for transforming inputs to problem A into inputs to problem B, such that the transformed problem has the same output as the original problem. Using this transformation, the output produced after taking in a particular input for problem A, gives the same output for another input for problem B. Basically it transforms the input of one problem to the input of another problem such that the output of both the problems remains same.
+
+
+ 
+This requires the inputs to both the problems to be similar or atleast easily modifiable to match each other logically, for example the inputs for the clique problem and the 3SAT problem can be transformed to one another. The 3SAT problem uses boolean variables and so the inputs for the clique can be taken as boolean values corresponding to the vertices of the clique. The transformation of 3SAT to clique is described in this article. The outputs of the problems must also be the same as the transformation is used to transform inputs of one problem into the inputs of another problem to prduce the same output.
+
+Karp's reduction (and any polynomial time reduction) for a decision problem X to a decision problem Y must do the following:
+
+given an instance x of X, it produces an instance y of Y
+It runs in time polynomial.
+Answer to x YES if and only if answer to y is YES.
+Applications
+NP-hard problems are often tackled with rules-based languages in areas including:
+
+Approximate computing
+Configuration
+Cryptography
+Data mining
+Decision support
+Phylogenetics
+Planning
+Process monitoring and control
+Rosters or schedules
+Routing/vehicle routing
+Scheduling
+Venn Diagram
+This image will give you a insight about the different types of NP problems and there relation with each other. We will discuss the diagram in detail below.
+15-Figure1-1
+
+Consider NP problems as the base set, i.e simply,a set consisting of those problems which have polynomial time solutions but using non deterministic algorithms.
+The region named P here is the set of polynomial time problems,i.e, those problems for which algorithms exist that can solve it in polynomial time. Note that this region is a subset of NP problems. The problems in P were once in NPi.e they had non deterministic algorithms, but we were able to decipher them and so these problems became P. NP complete problems are the intersection region of NP prolems and NP Hard problems. NP complete problems are those problems that have a polynomial time solution but this is derived using a non-deterministic algorithm. If an NP hard problem does not have a non deterministic algorithm, then it is not NP complete, it remains NP Hard. When there exists a deterministic algorithm for the NP problem, it is classified as P problem. When there exists a non deterministic algorithm for the problem, it is classified as NP complete. Note that NP forms the base class of all types of problems except some NP hard problems.You can see in the diagram above that there is a section of NP hard problems that does not fall in the NP region.
