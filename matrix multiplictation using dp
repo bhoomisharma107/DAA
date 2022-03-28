@@ -1,0 +1,141 @@
+Matrix Chain Multiplication using Dynamic Programming
+Difficulty Level Hard
+Frequently asked in Amazon Microsoft
+Tags Array Dynamic Programming Matrix
+Matrix Chain Multiplication is a method in which we find out the best way to multiply the given matrices. We all know that matrix multiplication is associative(A*B = B*A) in nature. So, we have a lot of orders in which we want to perform the multiplication. Actually, in this algorithm, we don’t find the final matrix after the multiplication of all the matrices. Here we find the most efficient way for matrix multiplication. Let’s see the multiplication of the matrices of order 30*35, 35*15, 15*5, 5*10, 10*20, 20*25.
+
+We use the  Dynamic Programming approach to find the best way to multiply the matrices.
+
+Table of Contents
+
+ 
+Matrix Chain Multiplication using Dynamic Programming
+Step-1
+Step-2
+Step-3
+Step-4
+Step-5
+Step-6
+Algorithm For Matrix Chain Multiplication
+Implementation
+C++ Program For Matrix Chain Multiplication
+Input
+Output
+Time Complexity for Matrix Chain Multiplication
+Space Complexity
+Matrix Chain Multiplication using Dynamic Programming
+Matrix Chain Multiplication – Firstly we define the formula used to find the value of each cell. M[i,j] equals the minimum cost for computing the sub-products A(i…k) and A(k+1…j), plus the cost of multiplying these two matrices together.
+
+Matrix Chain MultiplicationPin
+
+Step-1
+For all values of i=j set 0.
+
+Matrix Chain MultiplicationPin
+
+Step-2
+M[1,2] = 30*35*15 = 15750, M[2,3] = 35*15*5 = 2625, M[3,4] = 15*5*10 = 750, M[4,5] = 5*10*20 = 1000, M[5,6] = 10*20*25 = 5000.
+
+Pin
+
+Step-3
+M[1,3] = MIN( (M[1,1] + M[2,3] + P0P1P3), (M[1,2] + M[3,3] + P0P2P3) ) = MIN(2625+30*35*5, 15750+35*15*5) = 7875, M[2,4] = MIN( (M[2,2] + M[3,4] + P1P2P4), (M[2,3] + M[4,4] + P1P3P4) ) = MIN(750+35*15*10, 2625+35*5*10) = 4374, using the same concept find the other values using above formula then M[3,5] = 2500 and M[4,6] = 3500.
+
+See also
+Common elements in all rows of a given matrix
+Then updated values in matrix are look like:
+
+Pin
+
+Step-4
+Now find the values for j=i+3 using the above formula which we discuss. Then final matrix will be:
+
+Matrix Chain MultiplicationPin
+
+Step-5
+Now find the values for j=i+4 using the above formula which we discuss. Then the final matrix will be:
+
+Matrix Chain MultiplicationPin
+
+Step-6
+In the last step value of j=i+5 using the above formula which we discuss. Then the final matrix will be:
+
+Pin
+
+
+So, we find the minimum number of operations required is 15125 to multiply above matrices.
+
+Algorithm For Matrix Chain Multiplication
+Step:1 Create a dp matrix and set all values with a big value(INFINITY).
+Step:2 for i in range 1 to N-1:
+       dp[i][i]=0.
+Step:3 for i in range 2 to N-1:
+            for j in range 1 to N-i+1:
+                ran=i+j-1.
+                for k in range i to j:
+                    dp[j][ran]=min(dp[j][ran],dp[j][k]+dp[k+1][ran]+v[j-1]*v[k]*v[ran]).
+Step:4 Print dp[1][N-1].
+Implementation
+C++ Program For Matrix Chain Multiplication
+/*C++ Implementation of Matrix Chain Multiplication using DP.*/ 
+#include<bits/stdc++.h> 
+using namespace std; 
+#define INF 1000000009
+int min_operation(vector<int> &v, int n) 
+{ 
+    int dp[n+1][n+1];
+    memset(dp,INF,sizeof(dp));
+    /*if i=j then dp[i,j]=0.*/
+    for(int i=1;i<n;i++)
+    {
+        dp[i][i]=0;
+    }
+    /*Find M[i,j] using the formula.*/
+    int ran;
+    for(int i=2;i<n;i++) 
+    { 
+        for(int j=1;j<n-i+1;j++) 
+        { 
+            ran=i+j-1; 
+            for(int k=j;k<=ran-1;k++) 
+            { 
+                /*formula used here.*/
+                dp[j][ran]=min(dp[j][ran],dp[j][k]+dp[k+1][ran]+v[j-1]*v[k]*v[ran]); 
+            } 
+        } 
+    }
+    /*return the answer.*/
+    return dp[1][n-1]; 
+}
+int main() 
+{
+    /*input values.*/
+    int n;
+    /*number of matrices.*/
+    cin>>n;
+    /*sequence/chain of the matrices if there are n matrices then chain contain n+1 numbers.*/
+    vector<int> chain;
+    for(int i=0;i<n+1;i++)
+    {
+        int x;
+        cin>>x;
+        chain.push_back(x);
+    }
+    /*store the min operation needed to multiply all the given matrices in ans.*/
+    int ans=min_operation(chain,n+1);
+    /*print the result.*/
+    cout<<ans<<endl;
+    return 0;
+}
+Input
+6
+30 35 15 5 10 20 25
+Output
+Minimum number of operation used are: 15125
+Time Complexity for Matrix Chain Multiplication
+O(N*N*N) where N is the number present in the chain of the matrices. As we know that we use a matrix of N*N order to find the minimum operations. We need to find the minimum value for all the k values where i<=k<=j. So overall we use 3 nested for loop.
+
+See also
+BFS for Disconnected Graph
+Space Complexity
+O(N*N) where N is the number present in the chain of the matrices. We create a DP matrix that stores the results after each operation
