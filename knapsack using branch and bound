@@ -1,0 +1,34 @@
+he idea is to implement the fact that the Greedy approach provides the best solution for Fractional Knapsack problem.
+
+To check whether a particular node can give us a better solution or not, we calculate the optimal solution (through the node) implementing Greedy approach. If the solution calculated by Greedy approach itself is more than the best so far, then we can’t obtain a better solution through the node.
+
+Complete Algorithm is given below −
+
+Sort all items according to decreasing order of ratio of value per unit weight so that an upper bound can becalculated implementing Greedy Approach.
+
+Initialize maximum profit, such as maxProfit = 0
+
+An empty queue, Q, is created.
+
+A dummy node of decision tree is created and insert or enqueue it to Q. Profit and weight of dummy node be 0.
+
+Do following while Q is not vacant or empty.
+
+An item from Q is created. Let the extracted item be u.
+
+Calculate profit of next level node. If the profit is higher than maxProfit, then modify maxProfit.
+
+Calculate bound of next level node. If bound is higher than maxProfit, then add next level node to Q.
+
+Consider the case when next level node is not treated or considered as part of solution and add a node to queue with level as next, but weight and profit without treating or considering next level nodes.
+
+Illustrationis given below −
+
+Input
+// First thing in every pair is treated as weight of item
+// and second thing is treated as value of item
+Item arr1[] = {{2, 40}, {3.14, 50}, {1.98, 100},
+{5, 95}, {3, 30}};
+Knapsack Capacity W1 = 10
+Output
+The maximum possible profit = 235
